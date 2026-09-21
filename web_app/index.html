@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>EV-Sentinel – Smart Cybersecurity for Connected Electric Vehicles</title>
+  <link rel="stylesheet" href="css/cyber_theme.css?v=3.2">
+</head>
+<body>
+
+  <!-- Top Evaluation Toolbar: Quick Screen Jumper & Device Controls -->
+  <div class="quick-jumper-bar">
+    <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;color:#fff">EV-SENTINEL 3D</span>
+    <select id="screen-jumper">
+      <option value="screen-dashboard" selected>Screen 4: Main SOC Dashboard (3D Core)</option>
+      <option value="screen-vehicle">Screen 5: Interactive 3D EV Model (360° Drag)</option>
+      <option value="screen-ai-engine">Screen 7: 3D Latent Space (Z1, Z2, Z3)</option>
+      <option value="screen-charging">Screen 6: Charging Station CS-1024</option>
+      <option value="screen-alerts">Screen 8: Security Alerts Feed</option>
+      <option value="screen-threat-details">Screen 9: Threat Deep Dive</option>
+      <option value="screen-risk-analysis">Screen 10: Risk Analytics</option>
+      <option value="screen-communication">Screen 11: CAN & OCPP Bus Feed</option>
+      <option value="screen-sensors">Screen 12: Sensor Telemetry Array</option>
+      <option value="screen-logs">Screen 13: Zero-Trust Audit Logs</option>
+      <option value="screen-notifications">Screen 14: Push Notification Hub</option>
+      <option value="screen-profile">Screen 15: Identity & Access Profile</option>
+      <option value="screen-settings">Screen 16: Security Policies</option>
+      <option value="screen-admin">Screen 17: Admin SOC Command</option>
+      <option value="screen-reports">Screen 18: Compliance Reports</option>
+    </select>
+    <button id="btn-toggle-mute" class="icon-btn" style="width:26px;height:26px;font-size:11px;" title="Mute/Unmute Audio">🔊</button>
+    <button id="btn-toggle-viewport" class="icon-btn" style="width:auto;padding:0 8px;height:26px;font-size:10px;">📱 Phone View</button>
+  </div>
+
+  <!-- Main Device Shell Container -->
+  <div id="device-wrapper">
+    
+    <!-- Phone Status Bar -->
+    <div class="status-bar">
+      <span>09:41</span>
+      <div class="notch"></div>
+      <div class="status-icons">
+        <span>5G</span>
+        <span>SOC</span>
+        <span>100%</span>
+      </div>
+    </div>
+
+    <!-- Minimalist Architectural App Header -->
+    <header class="app-header">
+      <div class="header-brand" onclick="window.app.navigateTo('screen-dashboard')" style="cursor:pointer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#fff" fill="none"/>
+          <path d="M9 12l2 2 4-4" stroke="#00ff9d" stroke-width="2"/>
+        </svg>
+        <span class="header-title">EV-SENTINEL</span>
+      </div>
+      <div class="header-actions">
+        <div id="header-status-badge" class="header-status-badge badge-safe">
+          <span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:currentColor;"></span> SAFE (92%)
+        </div>
+        <button class="icon-btn" onclick="window.app.navigateTo('screen-notifications')" title="Notifications">
+          🔔
+          <span id="notif-badge-count" class="badge-counter">2</span>
+        </button>
+        <button class="icon-btn" onclick="window.app.navigateTo('screen-profile')" title="User Profile">
+          👤
+        </button>
+      </div>
+    </header>
+
+    <!-- Quick 3D Navigation Shortcuts -->
+    <div style="padding:8px 12px;background:rgba(10,11,15,0.95);border-bottom:1px solid var(--border-subtle);display:flex;gap:6px;overflow-x:auto;user-select:none">
+      <button class="cyber-btn btn-outline btn-xs" style="color:var(--cyber-cyan);border-color:rgba(0,240,255,0.4)" onclick="if (window.cyberAudio) window.cyberAudio.playClick(); document.getElementById('intro-modal').classList.add('open')">ℹ️ Intro</button>
+      <button class="cyber-btn btn-outline btn-xs" onclick="window.app.navigateTo('screen-dashboard')">🛡️ 3D Core</button>
+      <button class="cyber-btn btn-outline btn-xs" style="color:var(--cyber-cyan);border-color:rgba(0,240,255,0.3)" onclick="window.app.navigateTo('screen-vehicle')">🏎️ 3D EV (Drag)</button>
+      <button class="cyber-btn btn-outline btn-xs" onclick="window.app.navigateTo('screen-ai-engine')">🧠 3D Latent</button>
+      <button class="cyber-btn btn-outline btn-xs" onclick="window.app.navigateTo('screen-alerts')">🚨 Alerts</button>
+      <button class="cyber-btn btn-danger btn-xs" onclick="document.getElementById('demo-modal').classList.add('open')">⚡ Demo Attack</button>
+    </div>
+
+    <!-- Floating Trigger for Screen 19: Demo Mode -->
+    <div id="floating-demo-bar">
+      <button id="btn-open-demo" class="demo-pill">
+        <span>⚡ DEMO MODE</span>
+      </button>
+    </div>
+
+    <!-- Dedicated Intro Modal (Architecture & Platform Briefing) -->
+    <div id="intro-modal" class="cyber-modal">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--border-subtle);padding-bottom:10px;">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:32px;height:32px;border-radius:6px;background:rgba(0,240,255,0.1);border:1px solid rgba(0,240,255,0.4);display:flex;align-items:center;justify-content:center;font-size:16px">⚡</div>
+          <div>
+            <div style="font-size:9px;font-family:var(--font-mono);color:var(--cyber-cyan);letter-spacing:0.12em;text-transform:uppercase">SYSTEM OVERVIEW</div>
+            <h2 style="font-size:16px;font-weight:700;color:#fff">EV-Sentinel Architecture & Capabilities</h2>
+          </div>
+        </div>
+        <button class="icon-btn" onclick="document.getElementById('intro-modal').classList.remove('open')">✕</button>
+      </div>
+
+      <p style="font-size:12px;color:var(--text-muted);line-height:1.6;margin-bottom:14px">
+        <b>EV-Sentinel</b> is a next-generation cybersecurity platform designed to protect connected electric vehicles, high-voltage battery architecture, and fast-charging hubs against zero-day telemetry anomalies, CAN bus spoofing, and remote intrusion exploits.
+      </p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:10px;margin-bottom:16px">
+        <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border-subtle);border-radius:8px;padding:12px">
+          <div style="font-size:18px;margin-bottom:6px">🧠</div>
+          <div style="font-weight:700;font-size:12px;color:#fff;margin-bottom:4px">Edge AI Autoencoder</div>
+          <div style="font-size:11px;color:var(--text-dim);line-height:1.4">Continuously compresses 8 telemetry channels into a 3D latent bottleneck $(Z_1, Z_2, Z_3)$ to detect anomalous reconstruction loss.</div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border-subtle);border-radius:8px;padding:12px">
+          <div style="font-size:18px;margin-bottom:6px">🏎️</div>
+          <div style="font-weight:700;font-size:12px;color:#fff;margin-bottom:4px">3D Interactive Tesla EV</div>
+          <div style="font-size:11px;color:var(--text-dim);line-height:1.4">Photorealistic Quicksilver metallic 3D model with 360° orbit rotation, 7 hardware diagnostic hotspots, and dynamic energy flow.</div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border-subtle);border-radius:8px;padding:12px">
+          <div style="font-size:18px;margin-bottom:6px">⚡</div>
+          <div style="font-weight:700;font-size:12px;color:#fff;margin-bottom:4px">Multi-Bit Digital Adder</div>
+          <div style="font-size:11px;color:var(--text-dim);line-height:1.4">Hardware ripple-carry logic calculator driving live power, battery discharge, and traction speed simulation.</div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border-subtle);border-radius:8px;padding:12px">
+          <div style="font-size:18px;margin-bottom:6px">🛡️</div>
+          <div style="font-weight:700;font-size:12px;color:#fff;margin-bottom:4px">Zero-Trust CAN Firewall</div>
+          <div style="font-size:11px;color:var(--text-dim);line-height:1.4">Millisecond arbitration filter blocking unauthorized UDS diagnostic backdoors, current spikes, and mTLS bypasses.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button class="cyber-btn btn-outline" onclick="document.getElementById('intro-modal').classList.remove('open')">Close</button>
+        <button class="cyber-btn btn-primary" onclick="document.getElementById('intro-modal').classList.remove('open'); window.app.navigateTo('screen-vehicle');">Launch 3D EV Showroom →</button>
+      </div>
+    </div>
+
+    <!-- Screen 19: Dedicated Demo Mode Modal (Presenter Panel) -->
+    <div id="demo-modal">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div>
+          <div style="font-size:9px;font-family:var(--font-mono);color:var(--text-muted);letter-spacing:0.12em;text-transform:uppercase">PRESENTER SUITE</div>
+          <h2 style="font-size:16px;font-weight:600;color:#fff">Simulate Cyber Attacks</h2>
+        </div>
+        <button id="btn-close-demo" class="icon-btn">✕</button>
+      </div>
+      <p style="font-size:11px;color:var(--text-muted);margin-bottom:14px;line-height:1.4">
+        Inject anomalies into the Edge Autoencoder pipeline. Watch the 3D Gyroscope core and 3D vehicle wireframe react with real-time audio alarms and risk recalculation.
+      </p>
+      
+      <div class="attack-grid">
+        <div class="attack-item" onclick="window.app.triggerAttack(1)">
+          <div>
+            <div style="font-weight:600;color:var(--cyber-green);font-size:12px">1. Restore Normal Baseline</div>
+            <div style="font-size:10px;color:var(--text-dim)">Nominal 400V/32A, clear all active threats</div>
+          </div>
+          <span class="header-status-badge badge-safe">BASELINE</span>
+        </div>
+
+        <div class="attack-item" onclick="window.app.triggerAttack(2)">
+          <div>
+            <div style="font-weight:600;color:#fff;font-size:12px">2. Unauthorized Access Attempt</div>
+            <div style="font-size:10px;color:var(--text-muted)">Wireless OBD-II port scan & mTLS probe</div>
+          </div>
+          <span class="header-status-badge badge-warning">HIGH</span>
+        </div>
+
+        <div class="attack-item" onclick="window.app.triggerAttack(3)">
+          <div>
+            <div style="font-weight:600;color:#fff;font-size:12px">3. Abnormal Charging Surge</div>
+            <div style="font-size:10px;color:var(--text-muted)">84.5A current spike on CS-1024 overcurrent</div>
+          </div>
+          <span class="header-status-badge badge-critical">CRITICAL</span>
+        </div>
+
+        <div class="attack-item" onclick="window.app.triggerAttack(4)">
+          <div>
+            <div style="font-weight:600;color:#fff;font-size:12px">4. Unknown CAN Message Injection</div>
+            <div style="font-size:10px;color:var(--text-muted)">0x18DAF110 arbitration flood & spoofing</div>
+          </div>
+          <span class="header-status-badge badge-critical">CRITICAL</span>
+        </div>
+
+        <div class="attack-item" onclick="window.app.triggerAttack(5)">
+          <div>
+            <div style="font-weight:600;color:#fff;font-size:12px">5. Sudden Battery Temp Spike</div>
+            <div style="font-size:10px;color:var(--text-muted)">Thermal runaway modulation (>62°C)</div>
+          </div>
+          <span class="header-status-badge badge-critical">CRITICAL</span>
+        </div>
+
+        <div class="attack-item" onclick="window.app.triggerAttack(6)">
+          <div>
+            <div style="font-weight:600;color:#fff;font-size:12px">6. Multiple Login Failures</div>
+            <div style="font-size:10px;color:var(--text-muted)">Brute-force credential stuffing lock-out</div>
+          </div>
+          <span class="header-status-badge badge-warning">HIGH</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Master Screen Viewport -->
+    <main id="screens-viewport">
+
+      <!-- ==========================================================
+           SCREEN 4: MAIN DASHBOARD (With 3D Gyroscopic Security Core)
+           ========================================================== -->
+      <section id="screen-dashboard" class="app-screen active">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div>
+            <div style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase">Cyber Defense Posture</div>
+            <h2 style="font-size:17px;font-weight:600;letter-spacing:-0.01em">Welcome, Alex Mercer</h2>
+          </div>
+          <span class="header-status-badge badge-safe">ACTIVE AI GUARD</span>
+        </div>
+
+        <!-- System Intro Hero Card (Platform Briefing & Overview) -->
+        <div id="platform-intro-card" class="cyber-card intro-hero-card" style="padding:16px 18px;margin-bottom:14px;background:radial-gradient(ellipse at 85% 15%, rgba(0,240,255,0.09) 0%, rgba(13,14,18,0.95) 75%);border:1px solid rgba(0,240,255,0.22);position:relative;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:38px;height:38px;border-radius:10px;background:rgba(0,240,255,0.1);border:1px solid rgba(0,240,255,0.35);display:flex;align-items:center;justify-content:center;font-size:18px">
+                ⚡
+              </div>
+              <div>
+                <div style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.14em;color:var(--cyber-cyan);text-transform:uppercase;font-weight:700">EV-SENTINEL PLATFORM BRIEFING</div>
+                <h3 style="font-size:16px;font-weight:700;color:#ffffff;letter-spacing:0.02em">Smart Cybersecurity for Connected Electric Vehicles</h3>
+              </div>
+            </div>
+            <button class="icon-btn" onclick="document.getElementById('platform-intro-card').style.display='none'" title="Dismiss Intro" style="width:24px;height:24px;font-size:11px">✕</button>
+          </div>
+
+          <p style="font-size:12px;color:var(--text-muted);line-height:1.6;margin-bottom:12px">
+            Welcome to <b>EV-Sentinel</b> — an intelligent cyber-defense ecosystem engineered to safeguard connected electric vehicles, high-voltage battery architecture, and charging infrastructure. Powered by <b>Edge AI Autoencoders</b> with latent bottleneck reconstruction loss to autonomously detect zero-day intrusions and CAN-bus spoofing attacks in real-time.
+          </p>
+
+          <!-- Core Capability Badges -->
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
+            <span class="intro-tag">🧠 Edge AI Autoencoder (Z₁, Z₂, Z₃)</span>
+            <span class="intro-tag">🏎️ 3D Tesla EV Digital Twin (60 FPS WebGL)</span>
+            <span class="intro-tag">⚡ Multi-Bit Ripple Carry Adder Engine</span>
+            <span class="intro-tag">🛡️ ASIL-D ISO 26262 Fault Isolation</span>
+            <span class="intro-tag">📡 Real-Time CAN & OCPP Telemetry Stream</span>
+          </div>
+
+          <!-- Quick Navigation Actions -->
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="cyber-btn btn-primary btn-sm" onclick="window.app.navigateTo('screen-vehicle')">
+              🏎️ Explore 3D EV Showroom →
+            </button>
+            <button class="cyber-btn btn-outline btn-sm" onclick="window.app.navigateTo('screen-ai-engine')">
+              🧠 Inspect 3D Latent Space →
+            </button>
+            <button class="cyber-btn btn-outline btn-sm" onclick="document.getElementById('demo-modal').classList.add('open')">
+              ⚡ Simulate Cyber Attacks
+            </button>
+          </div>
+        </div>
+
+        <!-- Hero Security Card with Integrated 3D Gyroscopic Core -->
+        <div class="cyber-card" style="text-align:center;padding:16px 12px;">
+          <div class="card-header" style="justify-content:center;margin-bottom:2px">
+            <span class="card-title">Overall Cybersecurity Score</span>
+          </div>
+
+          <!-- 3D Gyroscope Canvas -->
+          <div style="position:relative;width:150px;height:150px;margin:0 auto;display:flex;align-items:center;justify-content:center">
+            <canvas id="gyro-3d-canvas" width="150" height="150" style="position:absolute;inset:0"></canvas>
+            
+            <div style="position:relative;z-index:2;text-align:center;pointer-events:none">
+              <div id="dash-score-text" style="font-size:36px;font-weight:300;font-family:var(--font-mono);line-height:1;color:#fff">92%</div>
+              <div id="dash-status-text" style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.14em;font-weight:700;color:var(--cyber-green);margin-top:2px">SAFE</div>
+            </div>
+          </div>
+
+          <div style="font-size:10px;font-family:var(--font-mono);color:var(--text-muted);display:flex;justify-content:space-around;border-top:1px solid var(--border-subtle);padding-top:10px;margin-top:8px">
+            <div>AUTOENCODER: <b style="color:#fff">0.124 MSE</b></div>
+            <div>CONFIDENCE: <b style="color:var(--cyber-green)">96.4%</b></div>
+          </div>
+        </div>
+
+        <!-- Live Telemetry Tiles -->
+        <div class="metric-grid">
+          <div class="metric-tile">
+            <div class="label">VEHICLE STATUS <span style="color:#00ff9d">●</span></div>
+            <div class="value">ONLINE <span class="unit">TLS 1.3</span></div>
+          </div>
+          <div class="metric-tile">
+            <div class="label">BATTERY VOLTAGE <span>⚡</span></div>
+            <div class="value"><span id="dash-val-volt">392.4</span> <span class="unit">V</span></div>
+          </div>
+          <div class="metric-tile">
+            <div class="label">BATTERY TEMP <span>🌡️</span></div>
+            <div class="value"><span id="dash-val-temp">32.4</span> <span class="unit">°C</span></div>
+          </div>
+          <div class="metric-tile">
+            <div class="label">VEHICLE SPEED <span>🏎️</span></div>
+            <div class="value"><span id="dash-val-speed">45</span> <span class="unit">km/h</span></div>
+          </div>
+          <div class="metric-tile">
+            <div class="label">ACTIVE THREATS <span style="color:#ff0055">⚠️</span></div>
+            <div class="value" style="color:#ff0055"><span id="dash-val-active-threats">1</span> <span class="unit">Detected</span></div>
+          </div>
+          <div class="metric-tile">
+            <div class="label">BLOCKED ATTACKS <span style="color:#00ff9d">🛡️</span></div>
+            <div class="value" style="color:#00ff9d">2 <span class="unit">Neutralized</span></div>
+          </div>
+        </div>
+
+        <!-- Quick Action Buttons -->
+        <div class="card-header">
+          <span class="card-title">Quick Operational Actions</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:6px">
+          <button class="cyber-btn btn-outline" onclick="window.app.navigateTo('screen-vehicle')">
+            🚗 3D Vehicle
+          </button>
+          <button class="cyber-btn btn-outline" onclick="window.app.navigateTo('screen-charging')">
+            🔌 Charging Hub
+          </button>
+          <button class="cyber-btn btn-outline" onclick="window.app.navigateTo('screen-alerts')">
+            🚨 Threat Alerts
+          </button>
+          <button class="cyber-btn btn-primary" onclick="window.app.navigateTo('screen-ai-engine')">
+            🧠 AI Anomaly
+          </button>
+        </div>
+      </section>
+
+      <!-- ==========================================================
+           SCREEN 5: REAL-TIME 3D VEHICLE MONITORING
+           ========================================================== -->
+      <section id="screen-vehicle" class="app-screen">
+        <div class="card-header">
+          <div>
+            <div style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase">Interactive 3D Digital Twin</div>
+            <h2 style="font-size:16px;font-weight:600">Tesla Model 3 Interactive 3D Experience</h2>
+          </div>
+          <span class="header-status-badge badge-safe">THREE.JS 60 FPS • DIGITAL TWIN</span>
+        </div>
+
+        <!-- Main Interactive 3D Tesla EV Experience & Showroom -->
+        <div id="tesla-lab-card" class="tesla-lab-card">
+          <!-- Viewpoints Bar -->
+          <div class="thm-views-bar">
+            <button class="thm-view-btn active" data-view="exterior" onclick="window.tesla3DLab.switchView('exterior')">Exterior</button>
+            <button class="thm-view-btn" data-view="interior" onclick="window.tesla3DLab.switchView('interior')">Interior</button>
+            <button class="thm-view-btn" data-view="dashboard" onclick="window.tesla3DLab.switchView('dashboard')">Dashboard</button>
+            <button class="thm-view-btn" data-view="battery" onclick="window.tesla3DLab.switchView('battery')">Battery Pack</button>
+            <button class="thm-view-btn" data-view="energy_flow" onclick="window.tesla3DLab.switchView('energy_flow')">⚡ Energy Flow</button>
+            <button class="thm-view-btn" data-view="front" onclick="window.tesla3DLab.switchView('front')">Front</button>
+            <button class="thm-view-btn" data-view="rear" onclick="window.tesla3DLab.switchView('rear')">Rear</button>
+            <button class="thm-view-btn" data-view="left" onclick="window.tesla3DLab.switchView('left')">Left</button>
+            <button class="thm-view-btn" data-view="right" onclick="window.tesla3DLab.switchView('right')">Right</button>
+            <button class="thm-view-btn" data-view="top" onclick="window.tesla3DLab.switchView('top')">Top</button>
+          </div>
+
+          <!-- Animated Real EV Physical Parts Quick-Action Bar -->
+          <div class="thm-parts-bar">
+            <span class="thm-parts-label">⚡ ANIMATED EV PARTS:</span>
+            <button id="thm-btn-frunk" class="thm-part-btn" title="Toggle Motorized Frunk Hood" onclick="window.tesla3DLab.toggleFrunk()">📦 Frunk Hood</button>
+            <button id="thm-btn-trunk" class="thm-part-btn" title="Toggle Motorized Rear Liftgate Trunk" onclick="window.tesla3DLab.toggleTrunk()">🧳 Rear Trunk</button>
+            <button id="thm-btn-charge" class="thm-part-btn" title="Toggle Motorized NACS Charge Port Door" onclick="window.tesla3DLab.toggleChargePort()">🔌 Charge Port</button>
+            <button id="thm-btn-spoiler" class="thm-part-btn" title="Toggle Active Deployable Rear Spoiler" onclick="window.tesla3DLab.toggleSpoiler()">🪽 Active Wing</button>
+            <button id="thm-btn-suspension" class="thm-part-btn" title="Toggle Pneumatic Air Suspension (Sport / Standard / Raised)" onclick="window.tesla3DLab.toggleSuspension()">↕️ Air Susp</button>
+            <button id="thm-btn-threat-signal" class="thm-part-btn threat-toggle-btn" title="Simulate Threat / Attack Red Signal Alert" onclick="window.tesla3DLab.toggleThreatSignal()">🚨 Threat Signal</button>
+            <button id="thm-btn-showcase" class="thm-part-btn showcase-btn" title="Toggle All Real EV Animated Physical Systems" onclick="window.tesla3DLab.toggleShowcase()">✨ Showcase All</button>
+          </div>
+
+          <!-- 3D WebGL Canvas Viewport -->
+          <div id="tesla-3d-viewport" class="tesla-3d-viewport">
+            <!-- Red Threat Warning Signal HUD Banner -->
+            <div id="thm-threat-hud" class="thm-threat-hud" style="display:none;">
+              <div class="thm-threat-hud-badge">
+                <span class="threat-beacon-dot"></span>
+                <span id="thm-threat-title">🚨 RED SIGNAL: CYBER THREAT DETECTED</span>
+              </div>
+              <div id="thm-threat-desc" class="thm-threat-hud-desc">
+                High-risk telemetry anomaly detected • ASIL-D high-voltage defense isolation active
+              </div>
+              <div class="thm-threat-hud-tags">
+                <span class="threat-tag" id="thm-threat-type">CAN_INJECTION</span>
+                <span class="threat-tag tag-risk" id="thm-threat-risk">RISK: 94.5%</span>
+                <span class="threat-tag tag-action">QUARANTINE LOCKED</span>
+              </div>
+            </div>
+
+            <!-- Loading Overlay -->
+            <div id="tesla-lab-loader" class="tesla-lab-loader">
+              <div class="tesla-loader-spinner"></div>
+              <div style="font-family:var(--font-mono);font-size:11px;color:var(--cyber-cyan);letter-spacing:0.1em">LOADING EV MODEL...</div>
+            </div>
+
+            <!-- 3D Controls Overlay -->
+            <div class="thm-controls-overlay">
+              <button id="thm-btn-rotate" class="thm-ctrl-btn active" title="Toggle Auto-Rotate" onclick="window.tesla3DLab.toggleRotate()">↻</button>
+              <button class="thm-ctrl-btn" title="Zoom In" onclick="window.tesla3DLab.zoomIn()">＋</button>
+              <button class="thm-ctrl-btn" title="Zoom Out" onclick="window.tesla3DLab.zoomOut()">−</button>
+              <button class="thm-ctrl-btn" title="Reset View" onclick="window.tesla3DLab.resetCamera()">🎯</button>
+              <button class="thm-ctrl-btn" title="Interior Cockpit" onclick="window.tesla3DLab.switchView('interior')">💺</button>
+              <button id="thm-btn-headlights" class="thm-ctrl-btn active" title="Toggle Headlights" onclick="window.tesla3DLab.toggleHeadlights()">💡</button>
+              <button id="thm-btn-energy-flow" class="thm-ctrl-btn" title="Toggle Energy Flow" onclick="window.tesla3DLab.toggleEnergyFlow()">⚡</button>
+              <button class="thm-ctrl-btn" title="Toggle Fullscreen" onclick="window.tesla3DLab.toggleFullscreen()">⛶</button>
+            </div>
+
+            <!-- Hotspot Information Glassmorphism Card -->
+            <div id="tesla-hotspot-modal" class="tesla-hotspot-modal" style="display:none;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+                <div>
+                  <div id="thm-title" style="font-size:13px;font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase;">BATTERY PACK</div>
+                  <div id="thm-specs" style="font-size:10px;font-family:var(--font-mono);color:var(--cyber-cyan);margin-top:2px;">82.0 kWh Structural 4680 • 400V High-Current</div>
+                </div>
+                <button class="icon-btn" onclick="window.tesla3DLab.closeHotspotModal()" style="width:22px;height:22px;font-size:11px;">✕</button>
+              </div>
+              <div style="font-size:11px;color:var(--text-dim);line-height:1.4;margin-bottom:6px;" id="thm-purpose">
+                Stores and delivers electrical energy to the dual traction inverters.
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:10px;font-family:var(--font-mono);background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:4px;border:1px solid rgba(255,255,255,0.05);">
+                <div>IMPACT: <span id="thm-impact" style="color:var(--cyber-green);font-weight:600;">High</span></div>
+                <div style="flex:1">LOGIC: <span id="thm-connection" style="color:#fff;">Adder multi-bit output drives cell discharge state.</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Instruction Strip -->
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:rgba(0,0,0,0.6);font-size:9px;font-family:var(--font-mono);color:var(--text-dim);border-top:1px solid var(--border-subtle)">
+            <span>🖱️ 360° DRAG • SCROLL ZOOM • DOUBLE-CLICK FOCUS</span>
+            <span style="color:var(--cyber-cyan)">7 HOTSPOTS ACTIVE</span>
+          </div>
+        </div>
+
+        <!-- Floating Glassmorphism Dashboard & Adder-Based Resource Usage Engine -->
+        <div class="ev-resource-monitor-card" style="margin-top:10px;">
+          <div class="monitor-header">
+            <div>
+              <div style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase">REAL-TIME TELEMETRY</div>
+              <div style="font-size:14px;font-weight:700;color:#fff;letter-spacing:0.04em">EV RESOURCE MONITOR</div>
+            </div>
+            <div id="calc-ev-status" style="font-family:var(--font-mono);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(0,255,157,0.1);border:1px solid currentColor;color:#00ff9d;">
+              NORMAL
+            </div>
+          </div>
+
+          <!-- Real-Time Metrics Bento Grid -->
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
+            <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border-subtle);border-radius:6px;padding:8px 10px;">
+              <div style="font-size:9px;font-family:var(--font-mono);color:var(--text-muted);">BATTERY LEVEL</div>
+              <div id="calc-ev-battery" style="font-size:20px;font-family:var(--font-mono);font-weight:700;color:#fff;margin-top:2px;">94%</div>
+              <div style="font-size:9px;color:var(--text-dim);margin-top:2px;">400V Pack Architecture</div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border-subtle);border-radius:6px;padding:8px 10px;">
+              <div style="font-size:9px;font-family:var(--font-mono);color:var(--text-muted);">POWER CONSUMPTION</div>
+              <div id="calc-ev-power" style="font-size:20px;font-family:var(--font-mono);font-weight:700;color:var(--cyber-cyan);margin-top:2px;">18.2 kW</div>
+              <div style="font-size:9px;color:var(--text-dim);margin-top:2px;">Dual Inverter Load</div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border-subtle);border-radius:6px;padding:8px 10px;">
+              <div style="font-size:9px;font-family:var(--font-mono);color:var(--text-muted);">ENERGY USED</div>
+              <div id="calc-ev-energy" style="font-size:20px;font-family:var(--font-mono);font-weight:700;color:#fff;margin-top:2px;">16.4 kWh</div>
+              <div style="font-size:9px;color:var(--text-dim);margin-top:2px;">Cumulative Trip Energy</div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border-subtle);border-radius:6px;padding:8px 10px;">
+              <div style="font-size:9px;font-family:var(--font-mono);color:var(--text-muted);">RESOURCE USAGE</div>
+              <div id="calc-ev-resource" style="font-size:20px;font-family:var(--font-mono);font-weight:700;color:var(--cyber-green);margin-top:2px;">42%</div>
+              <div style="font-size:9px;color:var(--text-dim);margin-top:2px;">Adder Compute Load</div>
+            </div>
+          </div>
+
+          <!-- Binary Adder Controls & Live Digital Logic -->
+          <div class="adder-input-group">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-size:10px;font-family:var(--font-mono);letter-spacing:0.08em;color:var(--cyber-cyan);font-weight:700;">
+                ADDER-BASED RESOURCE USAGE CALCULATOR
+              </span>
+              <span style="font-size:9px;font-family:var(--font-mono);color:var(--text-dim);">4-BIT RIPPLE CARRY</span>
+            </div>
+
+            <!-- Input A Row -->
+            <div style="margin-bottom:8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:10px;font-family:var(--font-mono);color:var(--text-muted);">BINARY INPUT A [A3 A2 A1 A0]</span>
+                <span style="font-size:9px;font-family:var(--font-mono);color:var(--text-dim);">CLICK BITS TO TOGGLE</span>
+              </div>
+              <div class="bit-switch-row">
+                <button id="bit-a-0" class="bit-btn active" onclick="window.adderCalc.toggleBit('A', 0)">1</button>
+                <button id="bit-a-1" class="bit-btn" onclick="window.adderCalc.toggleBit('A', 1)">0</button>
+                <button id="bit-a-2" class="bit-btn active" onclick="window.adderCalc.toggleBit('A', 2)">1</button>
+                <button id="bit-a-3" class="bit-btn" onclick="window.adderCalc.toggleBit('A', 3)">0</button>
+              </div>
+            </div>
+
+            <!-- Input B Row -->
+            <div style="margin-bottom:8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:10px;font-family:var(--font-mono);color:var(--text-muted);">BINARY INPUT B [B3 B2 B1 B0]</span>
+              </div>
+              <div class="bit-switch-row">
+                <button id="bit-b-0" class="bit-btn active" onclick="window.adderCalc.toggleBit('B', 0)">1</button>
+                <button id="bit-b-1" class="bit-btn" onclick="window.adderCalc.toggleBit('B', 1)">0</button>
+                <button id="bit-b-2" class="bit-btn active" onclick="window.adderCalc.toggleBit('B', 2)">1</button>
+                <button id="bit-b-3" class="bit-btn active" onclick="window.adderCalc.toggleBit('B', 3)">1</button>
+              </div>
+            </div>
+
+            <!-- Multi-Bit Ripple Carry Adder Output & Flow Pipeline -->
+            <div style="background:rgba(0,0,0,0.4);border:1px solid rgba(0,240,255,0.2);border-radius:6px;padding:8px 10px;margin-top:8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:9px;font-family:var(--font-mono);color:var(--text-muted);">ADDER COMPUTED OUTPUT [C4 S3 S2 S1 S0]:</span>
+                <span id="calc-ev-adder-out" style="font-size:12px;font-family:var(--font-mono);font-weight:700;color:var(--cyber-cyan);">10101 (21)</span>
+              </div>
+              <div style="font-size:9px;font-family:var(--font-mono);color:var(--text-dim);margin-top:6px;line-height:1.5;">
+                <span>Data Flow: </span>
+                <span style="color:var(--cyber-cyan)">Binary Inputs</span> → 
+                <span style="color:#fff">Full Adder (S = A⊕B⊕Cin, Cout = AB + Cin(A⊕B))</span> → 
+                <span style="color:var(--cyber-green)">Decimal Sum</span> → 
+                <span style="color:var(--cyber-yellow)">Resource %</span> → 
+                <span style="color:#00f0ff">3D EV Simulation (Speed, Lights & Flow)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-time Live Vehicle Data Cards -->
+        <div class="metric-grid">
+          <div class="metric-tile">
+            <div class="label">SPEED OVER TIME</div>
+            <div id="veh-speed" class="value">45 km/h</div>
+            <canvas id="veh-speed-chart" width="160" height="30" style="margin-top:4px"></canvas>
+          </div>
+          <div class="metric-tile">
+            <div class="label">BATTERY VOLTAGE</div>
+            <div id="veh-volt" class="value">392.4 V</div>
+            <canvas id="veh-volt-chart" width="160" height="30" style="margin-top:4px"></canvas>
+          </div>
+          <div class="metric-tile">
+            <div class="label">BATTERY TEMPERATURE</div>
+            <div id="veh-temp" class="value">32.4 °C</div>
+            <canvas id="veh-temp-chart" width="160" height="30" style="margin-top:4px"></canvas>
+          </div>
+          <div class="metric-tile">
+            <div class="label">MOTOR LOAD</div>
+            <div id="veh-motor" class="value" style="font-size:13px">Normal Operational</div>
+            <div style="font-size:9px;color:var(--text-dim);margin-top:4px">Dual PMSM Inverters</div>
+          </div>
+        </div>
+
+        <button class="cyber-btn btn-outline" onclick="window.app.navigateTo('screen-sensors')">
+          Detailed Sensor Telemetry Array →
+        </button>
+      </section>
+
+      <!-- ==========================================================
+           SCREEN 6: CHARGING STATION MONITORING
+           ========================================================== -->
+      <section id="screen-charging" class="app-screen">
+        <div class="card-header">
+          <div>
+            <div style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase">OCPP 2.0.1 Smart Charging</div>
+            <h2 style="font-size:16px;font-weight:600">Station CS-1024</h2>
+          </div>
+          <span id="chg-status-badge" class="header-status-badge badge-safe">SECURE ACTIVE</span>
+        </div>
+
+        <div class="cyber-card">
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px">
+            <span style="color:var(--text-muted)">Location: Metro Transit Hub - Bay 4</span>
+            <span style="font-family:var(--font-mono);color:#fff">CCS Type 2</span>
+          </div>
+
+          <!-- Minimalist Energy Flow Progress Beam -->
+          <div style="height:32px;background:rgba(255,255,255,0.02);border-radius:6px;display:flex;align-items:center;padding:0 12px;border:1px solid var(--border-subtle);margin:10px 0;position:relative;overflow:hidden">
+            <span style="font-size:10px;font-family:var(--font-mono);font-weight:600;color:#fff;z-index:2">ENERGY FLOW: 12.8 kW</span>
+            <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent);animation:matrix-scan 2s infinite"></div>
+          </div>
+
+          <div class="metric-grid" style="margin-top:12px">
+            <div class="metric-tile">
+              <div class="label">CHARGING VOLTAGE</div>
+              <div id="chg-volt" class="value">400.0 V</div>
+            </div>
+            <div class="metric-tile">
+              <div class="label">CHARGING CURRENT</div>
+              <div id="chg-curr" class="value">31.8 A</div>
+            </div>
+            <div class="metric-tile">
+              <div class="label">POWER CONSUMPTION</div>
+              <div id="chg-power" class="value">12.8 kW</div>
+            </div>
+            <div class="metric-tile">
+              <div class="label">SESSION DURATION</div>
+              <div class="value">45 <span class="unit">min</span></div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button class="cyber-btn btn-primary" onclick="window.app.showToast('Monitoring active on CS-1024')">
+              Start Monitoring
+            </button>
+            <button class="cyber-btn btn-danger" onclick="window.app.showToast('Session halted safely by operator', 'critical')">
+              Stop Session
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================================
+           SCREEN 7: AI THREAT DETECTION ENGINE (With 3D Latent Space)
+           ========================================================== -->
+      <section id="screen-ai-engine" class="app-screen">
+        <div class="card-header">
+          <div>
+            <div style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase">Explainable Edge AI Engine</div>
+            <h2 style="font-size:16px;font-weight:600">3D Latent Space & Autoencoder</h2>
+          </div>
+          <span id="latent-hud-state" class="header-status-badge badge-safe">INSIDE MANIFOLD</span>
+        </div>
+
+        <!-- 3D Latent Bottleneck Projection Viewport -->
+        <div class="cyber-card" style="padding:10px 12px;margin-bottom:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span class="card-title" style="margin-bottom:0">🧠 3D Latent Bottleneck Manifold (Z₁, Z₂, Z₃)</span>
+            <span style="font-family:var(--font-mono);font-size:9px;color:var(--cyber-cyan)">TOUCH / DRAG 360°</span>
+          </div>
+
+          <div class="latent-viewport-box">
+            <canvas id="latent-3d-canvas" width="380" height="240" class="canvas-3d"></canvas>
+            
+            <div class="viewport-controls-overlay">
+              <button class="ctrl-3d-btn" title="Toggle Auto-Rotate" onclick="window.latentSpace3D?.toggleAutoRotate()">🔄 Rotate</button>
+              <button class="ctrl-3d-btn" title="Reset View" onclick="window.latentSpace3D?.resetCamera()">🎯 Reset</button>
+            </div>
+
+            <div style="position:absolute;top:8px;left:10px;font-family:var(--font-mono);font-size:8px;color:var(--text-dim);pointer-events:none">
+              SPHERICAL WIREFRAME = 3-SIGMA SAFE ENVELOPE (μ + 3σ)
+            </div>
+
+            <!-- Live Latent Coordinates HUD -->
+            <div class="latent-hud-panel">
+              <span style="color:var(--cyber-cyan)">Z₁: <b id="latent-hud-z1">+8.2</b></span>
+              <span style="color:var(--cyber-amber)">Z₂: <b id="latent-hud-z2">+6.1</b></span>
+              <span style="color:#9d4edd">Z₃: <b id="latent-hud-z3">+4.0</b></span>
+              <span style="color:#fff">R: <b id="latent-hud-dist">11.0 (Safe ≤ 30.0)</b></span>
+            </div>
+          </div>
+
+          <!-- Quick Interactive Simulation Toggles on Screen 7 -->
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button class="cyber-btn btn-outline btn-xs" style="flex:1;color:var(--cyber-green);border-color:rgba(0,255,157,0.3)" onclick="window.app.triggerAttack(1)">
+              🟢 Ingest Safe Baseline
+            </button>
+            <button class="cyber-btn btn-danger btn-xs" style="flex:1" onclick="window.app.triggerAttack(3)">
+              🔴 Inject Anomaly Spike
+            </button>
+          </div>
+        </div>
+
+        <!-- Latent Space Dimension Mapping Card -->
+        <div class="cyber-card" style="padding:12px;margin-bottom:10px">
+          <span class="card-title" style="margin-bottom:8px">3D Dimension Physical Meaning</span>
+          <div style="font-size:11px;line-height:1.6;color:var(--text-muted)">
+            <div style="margin-bottom:4px">
+              <b style="color:var(--cyber-cyan)">🔵 Axis Z₁ (Kinetic Manifold):</b> Compresses vehicle speed (0–120 km/h) & traction motor current (0–150A).
+            </div>
+            <div style="margin-bottom:4px">
+              <b style="color:var(--cyber-amber)">🟡 Axis Z₂ (Power & Thermal):</b> Compresses high-voltage battery pack (360–420V), charging current (0–36A), & 16-point thermal arrays.
+            </div>
+            <div>
+              <b style="color:#9d4edd">🟣 Axis Z₃ (Protocol & Vibration):</b> Compresses CAN bus frame frequency (200–350 msg/s) & ESP32 6-DOF IMU chassis vibration.
+            </div>
+          </div>
+        </div>
+
+        <!-- Diagnostics & Loss Card -->
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="card-title">Reconstruction Loss (MSE)</span>
+            <span id="ai-anomaly-status" style="font-size:10px;font-family:var(--font-mono);font-weight:700;color:var(--cyber-green)">NORMAL BEHAVIOUR</span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;margin-bottom:12px">
+            <div style="background:rgba(255,255,255,0.02);padding:8px;border-radius:6px;border:1px solid var(--border-subtle)">
+              <div style="font-size:9px;color:var(--text-dim);font-family:var(--font-mono)">MSE LOSS</div>
+              <div id="ai-mse-val" style="font-family:var(--font-mono);color:#fff;font-weight:600;font-size:14px">0.124</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.02);padding:8px;border-radius:6px;border:1px solid var(--border-subtle)">
+              <div style="font-size:9px;color:var(--text-dim);font-family:var(--font-mono)">THRESHOLD (μ+3σ)</div>
+              <div id="ai-thres-val" style="font-family:var(--font-mono);color:var(--cyber-amber);font-weight:600;font-size:14px">0.286</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.02);padding:8px;border-radius:6px;border:1px solid var(--border-subtle)">
+              <div style="font-size:9px;color:var(--text-dim);font-family:var(--font-mono)">CONFIDENCE</div>
+              <div id="ai-conf-val" style="font-family:var(--font-mono);color:var(--cyber-green);font-weight:600;font-size:14px">96.4%</div>
+            </div>
+          </div>
+
+          <!-- Mathematical Pipeline Flow -->
+          <div style="background:rgba(0,0,0,0.3);border:1px solid var(--border-subtle);border-radius:6px;padding:10px;margin-bottom:12px;font-family:var(--font-mono);font-size:10px;line-height:1.6;color:var(--text-muted)">
+            <div style="color:#fff;font-weight:700;margin-bottom:2px">Neural Compression Architecture:</div>
+            <div>x ∈ ℝ⁸ → Encoder [8 → 5 → 3] → z ∈ ℝ³ → Decoder [3 → 5 → 8] → x̂ ∈ ℝ⁸</div>
+            <div style="margin-top:4px;color:var(--cyber-cyan)">Reconstruction Loss: MSE = 1/8 Σ(xᵢ - x̂ᵢ)²</div>
+            <div style="color:var(--cyber-green)">Decision: If MSE &gt; (μ + 3σ) → Flag Anomaly & Calculate Risk</div>
+          </div>
+
+          <button id="btn-run-scan" class="cyber-btn btn-primary" onclick="window.app.runManualScan()">
+            ⚡ Run Full AI Security Diagnostic Scan
+          </button>
+        </div>
+      </section>
+
+      <!-- ==========================================================
+           SCREEN 8: SECURITY ALERTS (Filterable Feed)
+           ========================================================== -->
+      <section id="screen-alerts" class="app-screen">
+        <div class="card-header">
+          <div>
+            <div style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase">Incident Mitigation Desk</div>
+            <h2 style="font-size:16px;font-weight:600">Security Alerts Feed</h2>
+          </div>
+        </div>
+
+        <!-- Filter Chips -->
+        <div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px">
+          <button class="cyber-btn btn-outline btn-xs" onclick="window.app.renderAlerts('ALL')">All</button>
+          <button class="cyber-btn btn-danger btn-xs" onclick="window.app.renderAlerts('CRITICAL')">Critical</button>
+          <button class="cyber-btn btn-outline btn-xs" style="color:var(--cyber-amber)" onclick="window.app.renderAlerts('HIGH')">High</button>
+          <button class="cyber-btn btn-outline btn-xs" onclick="window.app.renderAlerts('MEDIUM')">Medium</button>
+          <button class="cyber-btn btn-outline btn-xs" onclick="window.app.renderAlerts('LOW')">Low</button>
+        </div>
+
+        <div id="alerts-feed-container">
+          <!-- Populated dynamically by app.js -->
+        </div>
+      </section>
+
+      <!-- ==========================================================
+           SCREEN 9: THREAT DETAILS PAGE (DPI & Mitigation Triggers)
+           ========================================================== -->
+      <section id="screen-threat-details" class="app-screen">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <button class="icon-btn" onclick="window.app.navigateTo('screen-alerts')">←</button>
+          <h2 style="font-size:16px;font-weight:600">Threat Deep Dive</h2>
+        </div>
+
+        <div class="cyber-card">
+          <div class="card-header">
+            <span id="td-id" style="font-family:var(--font-mono);font-size:11px;color:#fff">ALT-9042</span>
+            <span id="td-badge" class="header-status-badge badge-critical">CRITICAL</span>
+          </div>
+
+          <h3 id="td-name" style="font-size:15px;font-weight:600;color:#fff;margin-bottom:4px">Unknown CAN Message</h3>
+          <p id="td-desc" style="font-size:11px;color:var(--text-muted);margin-bottom:12px;line-height:1.5">
+            Unregistered arbitration ID 0x18DAF110 injected with anomalous payload pattern matching UDS backdoor exploit.
+          </p>
+
+          <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border-subtle);padding:10px;border-radius:6px;margin-bottom:12px;font-size:11px;line-height:1.6">
+            <div>Source: <b id="td-source" style="color:#fff">CAN Bus Bus 0</b></div>
+            <div>Risk Score: <b id="td-score" style="color:var(--cyber-crimson)">76.5 / 100</b></div>
+            <div>AI Confidence: <b style="color:var(--cyber-green)">98.2%</b></div>
+          </div>
+
+          <div style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px">Deep Packet Inspection (Raw Hex):</div>
+          <div class="hex-terminal" style="height:80px;margin-bottom:12px">
+            <div class="hex-row critical"><span>0x18DAF110</span><span>03 22 F1 90 AA BB CC DD</span><span>UNVERIFIED</span></div>
+            <div class="hex-row"><span>0x0C04A102</span><span>F4 01 28 00 00 00 00 00</span><span>NORMAL</span></div>
+          </div>
+
+          <div style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px">Mitigation Actions:</div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
+            <button class="cyber-btn btn-danger" onclick="window.app.mitigateThreat(window.app.selectedAlert.alertId, 'Blocked')">
+              🚫 Block Traffic
+            </button>
+            <button class="cyber-btn btn-outline" onclick="window.app.mitigateThreat(window.app.selectedAlert.alertId, 'Isolated')">
+              🔒 Isolate Subsystem
+            </button>
+            <button class="cyber-btn btn-primary" onclick="window.app.mitigateThreat(window.app.selectedAlert.alertId, 'Resolved')">
+              ✅ Mark Resolved
+            </button>
+            <button class="cyber-btn btn-outline" onclick="window.app.showToast('Escalated to SOC Security Desk')">
+              📞 Contact SOC
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================================
+           SCREEN 10: RISK ANALYSIS DASHBOARD (Mathematical Formulas)
+           ========================================================== -->
+      <section id="screen-risk-analysis" class="app-screen">
+        <div class="card-header">
+          <div>
+            <div style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase">Predictive Risk Analytics</div>
+            <h2 style="font-size:16px;font-weight:600">Risk Analysis Engine</h2>
+          </div>
+        </div>
+
+        <div class="cyber-card">
+          <span class="card-title" style="margin-bottom:8px">Multi-Factor Risk Formula</span>
+          <div id="risk-calc-display"></div>
+        </div>
+
+        <div class="cyber-card">
+          <span class="card-title" style="margin-bottom:8px">Threats Detected Per Day</span>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;height:100px;padding:10px 4px;border-bottom:1px solid var(--border-subtle)">
+            <div style="text-align:center"><div style="height:30px;width:20px;background:#ffffff;border-radius:2px 2px 0 0;margin:0 auto"></div><span style="font-size:9px;color:var(--text-dim);font-family:var(--font-mono)">Mon</span></div>
+            <div style="text-align:center"><div style="height:60px;width:20px;background:#ffffff;border-radius:2px 2px 0 0;margin:0 auto"></div><span style="font-size:9px;color:var(--text-dim);font-family:var(--font-mono)">Tue</span></div>
+            <div style="text-align:center"><div style="height:20px;width:20px;background:#ffffff;border-radius:2px 2px 0 0;margin:0 auto"></div><span style="font-size:9px;color:var(--text-dim);font-family:var(--font-mono)">Wed</span></div>
+            <div style="text-align:center"><div style="height:45px;width:20px;background:#ffffff;border-radius:2px 2px 0 0;margin:0 auto"></div><span style="font-size:9px;color:var(--text-dim);font-family:var(--font-mono)">Thu</span></div>
+            <div style="text-align:center"><div style="height:85px;width:20px;background:var(--cyber-crimson);border-radius:2px 2px 0 0;margin:0 auto"></div><span style="font-size:9px;color:var(--text-dim);font-family:var(--font-mono)">Fri</span></div>
+            <div style="text-align:center"><div style="height:25px;width:20px;background:#ffffff;border-radius:2px 2px 0 0;margin:0 auto"></div><span style="font-size:9px;color:var(--text-dim);font-family:var(--font-mono)">Sat</span></div>
+            <div style="text-align:center"><div style="height:15px;width:20px;background:#ffffff;border-radius:2px 2px 0 0;margin:0 auto"></div><span style="font-size:9px;color:var(--text-dim);font-family:var(--font-mono)">Sun</span></div>
+          </div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric-tile">
+            <div class="label">CHARGING ANOMALIES</div>
+            <div class="value" style="color:var(--cyber-amber)">4 <span class="unit">events</span></div>
+          </div>
+          <div class="metric-tile">
+            <div class="label">AUTH FAILURES</div>
+            <div class="value">9 <span class="unit">blocked</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================================
+           SCREEN 11: COMMUNICATION MONITORING (CAN, OCPP, MQTT)
+           ========================================================== -->
+      <section id="screen-communication" class="app-screen">
+        <div class="card-header">
+          <div>
+            <div style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase">Protocol Bus Traffic</div>
+            <h2 style="font-size:16px;font-weight:600">Communication Stream</h2>
+          </div>
+          <span class="header-status-badge badge-safe">LIVE BUFFER</span>
+        </div>
+
+        <div style="display:flex;gap:6px;margin-bottom:8px">
+          <button class="cyber-btn btn-outline btn-xs" onclick="window.app.showToast('Filtering: All protocols')">All</button>
+          <button class="cyber-btn btn-outline btn-xs" onclick="window.app.showToast('Filtering: CAN Bus 2.0B / FD')">CAN Bus</button>
+          <button class="cyber-btn btn-outline btn-xs" onclick="window.app.showToast('Filtering: OCPP 2.0.1 WebSocket')">OCPP</button>
+          <button class="cyber-btn btn-outline btn-xs" onclick="window.app.showToast('Filtering: MQTT Telemetry')">MQTT</button>
+        </div>
+
+        <div id="can-hex-feed" class="hex-terminal">
+          <!-- Populated via real-time bus stream -->
+        </div>
+
+        <div style="font-size:10px;color:var(--text-dim);margin-top:10px">
+          Monitoring High-Speed ISO 11898 CAN Bus & TLS-encrypted OCPP 2.0.1 JSON frames.
+        </div>
+      </section>
+
+      <!-- ==========================================================
+           SCREEN 12: SENSOR DATA MONITORING (Gauges & Hardware)
+           ========================================================== -->
+      <section id="screen-sensors" class="app-screen">
+        <div class="card-header">
+          <div>
+            <div style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase">Embedded Hardware Interface</div>
+            <h2 style="font-size:16px;font-weight:600">Sensor Array Telemetry</h2>
+          </div>
+          <span class="header-status-badge badge-safe">ESP32 MTLS</span>
+        </div>
+
+        <div id="sensors-list-container">
+          <!-- Populated dynamically -->
+        </div>
+      </section>
+
+      <!-- ==========================================================
+           SCREEN 13: SECURITY LOGS (Searchable Zero-Trust Audit Trail)
+           ========================================================== -->
+      <section id="screen-logs" class="app-screen">
+        <div class="card-header">
+          <div>
+            <div style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase">Audit & Forensics</div>
+            <h2 style="font-size:16px;font-weight:600">Security Logs</h2>
+          </div>
+        </div>
+
+        <input type="text" class="cyber-input" placeholder="🔍 Search audit trail by ID or keyword..." oninput="window.app.showToast('Filtering zero-trust audit trail...')">
+
+        <div id="logs-list-container">
+          <!-- Populated dynamically -->
+        </div>
+      </section>
+
+      <!-- ==========================================================
+           SCREEN 14: NOTIFICATION CENTER
+           ========================================================== -->
+      <section id="screen-notifications" class="app-screen">
+        <div class="card-header">
+          <div>
+            <div style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase">Real-Time Push Alerts</div>
+            <h2 style="font-size:16px;font-weight:600">Notification Center</h2>
+          </div>
+          <button class="cyber-btn btn-outline btn-xs" onclick="window.app.notifications=[];window.app.renderNotifications();window.app.showToast('All notifications cleared')">Clear All</button>
+        </div>
+
+        <div id="notif-list-container">
+          <!-- Populated dynamically -->
+        </div>
+      </section>
+
+      <!-- ==========================================================
+           SCREEN 15: USER PROFILE (Credentials & Role Switcher)
+           ========================================================== -->
+      <section id="screen-profile" class="app-screen">
+        <div class="card-header">
+          <div>
+            <div style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase">Identity & Access</div>
+            <h2 style="font-size:16px;font-weight:600">User Profile</h2>
+          </div>
+        </div>
+
+        <div class="cyber-card" style="text-align:center;padding:20px">
+          <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 10px">
+            👨‍💻
+          </div>
+          <h3 id="profile-name" style="font-size:15px;font-weight:600;color:#fff">Alex Mercer</h3>
+          <div id="profile-role" class="header-status-badge badge-safe" style="margin:4px 0 8px">EV Owner</div>
+          <div id="profile-email" style="font-size:11px;color:var(--text-muted)">alex.mercer@ev-sentinel.io</div>
+        </div>
+
+        <div class="cyber-card">
+          <span class="card-title" style="margin-bottom:8px">Quick Role Switcher</span>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
+            <button class="cyber-btn btn-outline btn-xs" onclick="window.app.switchRole('EV Owner')">EV Owner</button>
+            <button class="cyber-btn btn-outline btn-xs" onclick="window.app.switchRole('Station Operator')">Station Operator</button>
+            <button class="cyber-btn btn-outline btn-xs" onclick="window.app.switchRole('Administrator')">Administrator</button>
+            <button class="cyber-btn btn-outline btn-xs" onclick="window.app.switchRole('Fleet Manager')">Fleet Manager</button>
+          </div>
+        </div>
+
+        <div class="cyber-card">
+          <span class="card-title" style="margin-bottom:8px">Connected Assets</span>
+          <div style="font-size:11px;color:var(--text-muted);display:flex;justify-content:space-between;margin-bottom:6px">
+            <span>CyberSedan GT (v101)</span>
+            <span style="color:var(--cyber-green)">Bound (CAN 2.0B)</span>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);display:flex;justify-content:space-between">
+            <span>Supercharge Hub CS-1024</span>
+            <span style="color:#fff">Authorized (OCPP)</span>
+          </div>
+        </div>
+
+        <button class="cyber-btn btn-danger" onclick="if (window.cyberAudio) window.cyberAudio.playSuccess(); window.app.showToast('Session refreshed: Zero-Trust key active', 'safe'); window.app.navigateTo('screen-dashboard');">
+          🔒 Rotate Cryptographic Key / Refresh Session
+        </button>
+      </section>
+
+      <!-- ==========================================================
+           SCREEN 16: SETTINGS (Security Policies & Sliders)
+           ========================================================== -->
+      <section id="screen-settings" class="app-screen">
+        <div class="card-header">
+          <div>
+            <div style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase">Preferences & Policies</div>
+            <h2 style="font-size:16px;font-weight:600">Security Settings</h2>
+          </div>
+        </div>
+
+        <div class="cyber-card">
+          <span class="card-title" style="margin-bottom:10px">Zero-Trust Guard Controls</span>
+          
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div>
+              <div style="font-weight:600;font-size:12px">Two-Factor Authentication (2FA)</div>
+              <div style="font-size:10px;color:var(--text-muted)">Hardware FIDO2 Security Token</div>
+            </div>
+            <input type="checkbox" checked style="accent-color:#fff">
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div>
+              <div style="font-weight:600;font-size:12px">Autonomous Port Isolation</div>
+              <div style="font-size:10px;color:var(--text-muted)">Auto-kill relay on current surge >50A</div>
+            </div>
+            <input type="checkbox" checked style="accent-color:#fff">
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div>
+              <div style="font-weight:600;font-size:12px">Biometric Quick Unlock</div>
+              <div style="font-size:10px;color:var(--text-muted)">Face ID / Fingerprint sensor</div>
+            </div>
+            <input type="checkbox" checked style="accent-color:#fff">
+          </div>
+
+          <div style="margin-top:10px">
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px">
+              <span>AI Threat Sensitivity</span>
+              <span style="font-family:var(--font-mono);color:#fff">98.5% (High)</span>
+            </div>
+            <input type="range" min="80" max="100" value="98" style="width:100%;accent-color:#fff">
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================================
+           SCREEN 17: ADMIN DASHBOARD (Multi-Tenant SOC Portal)
+           ========================================================== -->
+      <section id="screen-admin" class="app-screen">
+        <div class="card-header">
+          <div>
+            <div style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase">Central SOC Command</div>
+            <h2 style="font-size:16px;font-weight:600">Multi-Tenant Admin View</h2>
+          </div>
+          <span class="header-status-badge badge-safe">ALL FLEET GREEN</span>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric-tile">
+            <div class="label">REGISTERED USERS</div>
+            <div class="value">352</div>
+          </div>
+          <div class="metric-tile">
+            <div class="label">CONNECTED EVS</div>
+            <div class="value">1,284</div>
+          </div>
+          <div class="metric-tile">
+            <div class="label">CHARGING HUBS</div>
+            <div class="value">412</div>
+          </div>
+          <div class="metric-tile">
+            <div class="label">TOTAL THREATS</div>
+            <div class="value" style="color:var(--cyber-crimson)">182</div>
+          </div>
+        </div>
+
+        <div class="cyber-card">
+          <span class="card-title" style="margin-bottom:8px">Global Fleet Lockdown Controls</span>
+          <p style="font-size:11px;color:var(--text-muted);margin-bottom:12px;line-height:1.4">
+            Emergency fleet mitigation. Disables remote telematics OTA channels across all 1,284 vehicles.
+          </p>
+          <div style="display:flex;gap:8px">
+            <button class="cyber-btn btn-danger" onclick="window.app.showToast('FLEET LOCKDOWN ENGAGED BY SOC', 'critical')">
+              🚨 Fleet Lockdown
+            </button>
+            <button class="cyber-btn btn-primary" onclick="window.app.showToast('Global CAN Firewall rules deployed', 'safe')">
+              🛡️ Deploy Firewall
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================================
+           SCREEN 18: REPORT GENERATION (Audits & PDF/CSV Export)
+           ========================================================== -->
+      <section id="screen-reports" class="app-screen">
+        <div class="card-header">
+          <div>
+            <div style="font-size:9px;font-family:var(--font-mono);letter-spacing:0.12em;color:var(--text-dim);text-transform:uppercase">Compliance Audit Suite</div>
+            <h2 style="font-size:16px;font-weight:600">Security Report</h2>
+          </div>
+        </div>
+
+        <div class="cyber-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="font-weight:600;font-size:13px">ISO/SAE 21434 Audit Report</span>
+            <span class="header-status-badge badge-safe">PASSED</span>
+          </div>
+          <div style="font-size:10px;font-family:var(--font-mono);color:var(--text-dim);margin-bottom:10px">Generated: <span id="report-date-str">Today</span></div>
+
+          <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border-subtle);padding:10px;border-radius:6px;font-size:11px;line-height:1.6;margin-bottom:12px">
+            <div>Target: <b>EV-Sentinel Test Vehicle</b> (VIN: 1G1FX6S05N4189201)</div>
+            <div>Infrastructure: <b>Station CS-1024</b> (CCS2 Fast Charge)</div>
+            <div>Safety Integrity: <b>ISO 26262 ASIL-D Compliant</b></div>
+            <div>Reconstruction Loss: <b>Nominal 0.124 MSE</b></div>
+            <div>Attacks Blocked (24h): <b>2 Critical Injections</b></div>
+          </div>
+
+          <div style="display:flex;gap:8px">
+            <button class="cyber-btn btn-primary" onclick="window.app.printReportPDF()">
+              📄 Print / Save PDF
+            </button>
+            <button class="cyber-btn btn-outline" onclick="window.app.exportReportCSV()">
+              📊 Export CSV
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Minimalist Bottom Navigation Bar (5 Primary Sections) -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-target="screen-dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <span>Home</span>
+      </button>
+
+      <button class="nav-item" data-target="screen-vehicle">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/><path d="M5 11l2-6h10l2 6"/></svg>
+        <span>Vehicle</span>
+      </button>
+
+      <button class="nav-item" data-target="screen-alerts">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Security</span>
+      </button>
+
+      <button class="nav-item" data-target="screen-risk-analysis">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>Analytics</span>
+      </button>
+
+      <button class="nav-item" data-target="screen-profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Profile</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <script src="js/three.min.js"></script>
+  <script src="js/OrbitControls.js"></script>
+  <script src="js/GLTFLoader.js"></script>
+  <script src="js/tesla_3d_lab.js?v=4.0"></script>
+  <script src="js/audio_synth.js?v=3.2"></script>
+  <script src="js/cyber_3d.js?v=3.2"></script>
+  <script src="js/app.js?v=3.2"></script>
+</body>
+</html>
